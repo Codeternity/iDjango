@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://static.polyv.net/file/polyv_ppt_player.js" type="text/javascript"></script>
+
+</head>
+<body>
+
+
+{#<OBJECT classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="600" height="338" id="polyvplayer30fe77e88ffa4d7b7feb6527cfbf1e74_3"><PARAM NAME=movie VALUE="//player.polyv.net/videos/player.swf" /><param name="allowscriptaccess" value="always" /><param name="wmode" value="Transparent" /><param name="flashvars" value="vid=30fe77e88ffa4d7b7feb6527cfbf1e74_3" /><param name="allowFullScreen" value="true" /><EMBED src="//player.polyv.net/videos/player.swf" width="600" height="338"  TYPE="application/x-shockwave-flash" allowscriptaccess="always" wmode="Transparent" name="polyvplayer30fe77e88ffa4d7b7feb6527cfbf1e74_3" allowFullScreen="true" flashvars="vid=30fe77e88ffa4d7b7feb6527cfbf1e74_3"></EMBED></OBJECT>#}
+{#<br>#}
+{#<OBJECT classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="600" height="338" id="polyvplayer30fe77e88fa6fabbf2a5eec3f155ab54_3"><PARAM NAME=movie VALUE="//player.polyv.net/videos/player.swf" /><param name="allowscriptaccess" value="always" /><param name="wmode" value="Transparent" /><param name="flashvars" value="vid=30fe77e88fa6fabbf2a5eec3f155ab54_3" /><param name="allowFullScreen" value="true" /><EMBED src="//player.polyv.net/videos/player.swf" width="600" height="338"  TYPE="application/x-shockwave-flash" allowscriptaccess="always" wmode="Transparent" name="polyvplayer30fe77e88fa6fabbf2a5eec3f155ab54_3" allowFullScreen="true" flashvars="vid=30fe77e88fa6fabbf2a5eec3f155ab54_3"></EMBED></OBJECT>#}
+{#---#}
+
+<div>
+    testvalue is:{{ test }}
+</div>
+<input type="file" id="fileupload1">
+<p>----</p>
+<script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.js"></script><script src="uploadify/jquery.uploadify.min.js"></script>
+<script>// <![CDATA[
+$(function() {
+        $.fileupload1 = $('#fileupload1').uploadify({
+            'auto' : false,
+            'formData' : {
+                'fcharset' : 'ISO-8859-1',
+                'writetoken' : 'aRTUQVx1Cikcpxq-oPcz40u14LHwd1zf',
+                'cataid':'1',
+                'JSONRPC'     : '{"title": "这里是标题", "tag": "标签", "desc": "视频文档描述"}'
+            },
+            'buttonText': '选择上传文件',
+            'fileSizeLimit' : '3000MB',
+            'fileTypeDesc' : '视频文件',
+            'fileTypeExts' : '*.avi; *.wmv; *.mp4;*.mp3; *.mov; *.flv; *.mkv; *.rmvb',//文件类型过滤
+            'swf'      : '../uploadify/uploadify.swf',
+            'multi':true,
+            'successTimeout':1800,
+            'queueSizeLimit':100,
+            'uploader' : 'http://v.polyv.net/uc/services/rest?method=uploadfile',
+            //onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
+            //下面的例子演示如何获取到vid
+            'onUploadSuccess':function(file,data,response){
+                var jsonobj=eval('('+data+')');
+                alert(jsonobj.data[0].vid + " - " + jsonobj.data[0].playerwidth + " - " + jsonobj.data[0].duration);
+            }
+        });
+    });
+// ]]></script>
+
+<p>--function script demo--</p>
+
+<script src='//player.polyv.net/script/polyvplayer.min.js'></script>
+<div id='plv_30fe77e88ffa4d7b7feb6527cfbf1e74_3'></div>
+<script>
+var player = polyvObject('#plv_30fe77e88ffa4d7b7feb6527cfbf1e74_3').videoPlayer({
+    'width':'600',
+    'height':'338',
+    'vid' : '30fe77e88ffa4d7b7feb6527cfbf1e74_3'
+});
+</script>
+
+<span id="stayInVideoTime">当前观看时间（包含视频缓冲时间）是 0 秒</span><br>
+<span id="realPlayVideoTime">当前观看时间（不包含视频缓冲时间）是 0 秒</span><br>
+<span id="getCurrentTime">当前播放进度是 0 秒</span><br />
+<span id="flow">当前流量: 0 字节 | 0 KB</span><br />
+<span id="duration">当前视频的时长是 0 秒</span><br />
+
+<input type="button" onclick="resume()" value="播放"></input>
+<input type="button" onclick="pause()" value="暂停"></input>
+<input type="button" onclick="seek(30)" value="seek到第30秒"></input>
+<input type="button" onclick="stop()" value="停止"></input>
+<input type="button" onclick="nextVideo()" value="切换到下一个视频"></input><br />
+
+<script type="text/javascript">
+function getPlayer(movieName) {
+ if (navigator.appName.indexOf("Microsoft") != -1) {
+  var reObj=window[movieName];
+  try
+  {
+   if(reObj.length>0)
+   {
+    return reObj[0];
+   }
+            else
+            {
+              return reObj;
+            }
+  }catch(e)
+  {
+
+  }
+  return ;
+ }
+ else {
+  return document[movieName];
+ }
+}
+
+function resume()
+{
+  player.j2s_resumeVideo();
+}
+
+function pause()
+{
+  player.j2s_pauseVideo();
+}
+
+function seek(_sec)
+{
+  player.j2s_seekVideo(_sec);
+}
+
+function stop()
+{
+  player.j2s_stopVideo();
+}
+
+function nextVideo()
+{
+  player.changeVid("02bfeb00e27ff92a76364b16af2f115e_0");
+}
+
+function render()
+{
+if(player != undefined && player.j2s_stayInVideoTime != undefined && player.j2s_realPlayVideoTime != undefined && player.j2s_getCurrentTime != undefined && player.j2s_getDuration != undefined && player.j2s_getFlowCount != undefined){
+  var sec1=player.j2s_stayInVideoTime();
+  var sec2=player.j2s_getCurrentTime();
+  var sec3=player.j2s_getDuration();
+  var sec4=player.j2s_realPlayVideoTime();
+  var byte=player.j2s_getFlowCount();
+  document.getElementById("stayInVideoTime").innerHTML="当前观看时间（包含视频缓冲时间）是 <span style='color:#ff0000;'>"+sec1+"</span> 秒";
+  document.getElementById("realPlayVideoTime").innerHTML="当前观看时间（不包含视频缓冲时间）是 <span style='color:#ff0000;'>"+sec4+"</span> 秒";
+  document.getElementById("getCurrentTime").innerHTML="当前播放进度是 <span style='color:#ff0000;'>"+sec2+"</span> 秒";
+  document.getElementById("duration").innerHTML="当前视频的时长是 <span style='color:#ff0000;'>"+sec3+"</span> 秒";
+  document.getElementById("flow").innerHTML="当前流量: <span style='color:#ff0000;'>"+byte+"</span> 字节 | <span style='color:#ff0000;'>"+byte/1024+"</span> KB";
+}
+}
+var interval=setInterval("render()",500);
+
+</script>
+
+
+<form method="post" action="https://v.polyv.net/uc/services/rest?method=uploadfile" enctype="multipart/form-data" >
+      <input type="file"  id= "Filedata" name="Filedata"  accept=".avi, .wmv, .mp4, .mp3, .mov, .flv, .mkv, .rmvb" >
+      <br/>
+      <br/>
+      <input type="text"  id= "JSONRPC" name="JSONRPC" value='{"title": "uploadify上传视频", "tag": "标签", "desc": "视频文档描述"}' >
+      <br/>
+      <br/>
+      writetoken<input type="text"  id= "writetoken" name="writetoken" value="" >
+      <br/>
+      <br/>
+      <input type="submit" name="submit1" value="上传">
+    </form>
+</body>
+</html>
